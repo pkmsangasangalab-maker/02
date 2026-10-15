@@ -9,13 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>PERMATA LAB - UPTD Puskesmas Sanga-sanga 2026</title>
   <script>
-  // Tema tunggal PERMATA LAB: navy gelap.
-  document.documentElement.setAttribute('data-theme','biru');
+  // Tema tampilan: "keramik" (bawaan) atau "biru". Disimpan per perangkat.
+  (function(){var t=null;try{t=localStorage.getItem('permata_theme');}catch(e){}
+    if(t==='biru')document.documentElement.setAttribute('data-theme','biru');})();
   function updateThemeBtn(){var b=document.getElementById('themeBtn');if(!b)return;
     var biru=document.documentElement.getAttribute('data-theme')==='biru';
     var l=b.querySelector('.lbl');if(l)l.textContent=biru?'Tema Keramik':'Tema Biru';
     b.setAttribute('aria-label',biru?'Ganti ke tema Keramik':'Ganti ke tema Biru');b.setAttribute('aria-pressed',biru?'true':'false');}
-  function toggleTheme(){document.documentElement.setAttribute('data-theme','biru');updateThemeBtn();}
+  function toggleTheme(){var biru=document.documentElement.getAttribute('data-theme')==='biru';
+    if(biru)document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme','biru');
+    try{localStorage.setItem('permata_theme',biru?'keramik':'biru');}catch(e){}
+    updateThemeBtn();
+    if(window.permataChartRefresh){try{permataChartRefresh();}catch(e){}}}
   document.addEventListener('DOMContentLoaded',updateThemeBtn);
   </script>
   <style>
@@ -1267,49 +1272,6 @@ html[data-theme="biru"] .side-link{font-size:.9rem;letter-spacing:0;line-height:
 .g-act a:hover,.g-act button:hover{background:var(--sky-soft)}
 .task-item .g-act+.task-delete{margin-left:0}
 </style>
-
-<style id="permata-single-navy-theme">
-/* PERMATA LAB — satu tema konsisten, mengikuti referensi dashboard navy */
-:root{--glass-bg:rgba(5,20,39,.94);--glass-border:rgba(80,150,220,.28);--card-bg:rgba(7,25,46,.96);--card-hover:rgba(13,43,73,.98);--accent-color:#2496ff;--success-color:#10cfa0;--text-light:#f3f7ff;--text-sub:#b9c9df;--hdr-h:88px;--side-w:264px;--ink:#edf4ff;--ink-2:#d4e1f4;--ink-3:#9eb2ce;--panel:#081b31;--panel-2:#0a213b;--line:rgba(93,151,207,.27);--sky:#168bfa;--sky-deep:#2e9bff;--sky-ink:#eaf4ff;--sky-soft:rgba(28,137,244,.14);--lift:0 12px 30px rgba(0,0,0,.25)}
-html,body{background:#061427!important;color:#edf4ff!important;font-family:'Poppins','Segoe UI',sans-serif!important}
-body{background:radial-gradient(ellipse at 65% 0%,#123252 0,#07182c 48%,#041020 100%)!important}
-header{background:linear-gradient(90deg,rgba(5,19,36,.98),rgba(10,34,58,.96))!important;border-bottom:1px solid rgba(69,145,220,.3)!important;box-shadow:0 8px 24px rgba(0,0,0,.28)!important;padding:14px 24px!important}
-.header-content{flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:16px!important}
-header h1,.hd-title h1{color:#f4f8ff!important}header p,.hd-title p{color:#c3d5ec!important;letter-spacing:0!important}
-.app-sidebar{top:var(--hdr-h)!important;background:linear-gradient(180deg,#06172b,#071a30 65%,#061427)!important;border-right:1px solid rgba(83,145,208,.22)!important;padding:16px 12px!important}
-.side-link{color:#c6d5ea!important;border-radius:9px!important;padding:13px 14px!important;font-size:.88rem!important;gap:14px!important}
-.side-link .ic{color:#a8bfdd!important}.side-link:hover{background:rgba(35,116,195,.2)!important;color:#fff!important}
-.side-link.active{background:linear-gradient(100deg,#1c4f88,#174477)!important;color:#fff!important;box-shadow:none!important;font-weight:600!important}.side-link.active .ic{color:#fff!important}
-.dashboard-container{width:auto!important;max-width:none!important;margin-left:var(--side-w)!important;padding:14px 16px 28px!important}
-.hero,.home-kpis,.home-row,.announce{display:none!important}
-.section-title{background:#081c32!important;border:1px solid var(--line)!important;border-left:3px solid #2496ff!important;border-radius:10px!important;color:#eaf3ff!important;box-shadow:none!important}
-.chart-card,.card,.kpi,.info-card,.tasks-dashboard,.control-panel,.stok-charts .chart-card,.task-stat{background:linear-gradient(145deg,#0a2038,#07182b)!important;border:1px solid rgba(74,145,213,.27)!important;color:#eaf3ff!important;border-radius:12px!important;box-shadow:0 8px 20px rgba(0,0,0,.18)!important}
-.chart-head h3,.card h3,.chart-card h3{color:#edf5ff!important}.chart-note,#ringkasanNote,#mutuNote,#stokNote,.card p{color:#aebfda!important}
-.card:hover{background:#103052!important;border-color:#2496ff!important;box-shadow:0 0 18px rgba(36,150,255,.18)!important;transform:translateY(-2px)}
-.card .icon{background:#12365a!important;color:#eaf4ff!important}
-.btn-action,.pill-btn,.filter-chip{background:#0d2a49!important;color:#dbeaff!important;border:1px solid rgba(94,157,220,.3)!important;box-shadow:none!important}.btn-action.primary,.btn-action.sky{background:#176dc1!important;color:#fff!important}
-.date-chip{background:#071a2e!important;border-color:rgba(94,157,220,.3)!important;color:#d8e6f7!important}
-.search-box input,.dashboard-container input,.dashboard-container select,.dashboard-container textarea,.form-control,.stok-tools select,.stok-tools input,.task-form input,.task-form select,.chart-head select,.login-field input{background:#06182b!important;color:#eff6ff!important;border:1px solid rgba(94,157,220,.35)!important;border-radius:8px!important}
-select option{background:#071a2e!important;color:#eff6ff!important}
-footer{background:#061427!important;border-top:1px solid var(--line)!important}.footer-title h4,.footer-title p{color:#d7e5f7!important}.social-btn{background:#0b2440!important;color:#dceaff!important;border-color:var(--line)!important}
-.modal-box,.login-box{background:#081b31!important;color:#edf4ff!important;border-color:rgba(61,145,225,.4)!important}.modal-header h3,.login-box h2{color:#fff!important}
-#loginOverlay{background:linear-gradient(135deg,rgba(3,13,27,.97),rgba(8,35,62,.96))!important}
-/* Dashboard ringkasan jadi pusat visual utama; sembunyikan dashboard duplikat bertema lama */
-.rs-dash{background:linear-gradient(160deg,#091c31,#061426 75%)!important;border:1px solid rgba(65,135,203,.32)!important;border-radius:12px!important;box-shadow:none!important;padding:14px!important}
-.rs-card{background:linear-gradient(145deg,rgba(8,29,51,.98),rgba(5,21,38,.98))!important;border:1px solid rgba(65,135,203,.3)!important;border-radius:11px!important}
-.rs-k{border-radius:12px!important}.rs-banner{border-radius:10px!important;background:rgba(8,90,80,.2)!important}
-.rs-kpis{gap:12px!important}.rs-row{gap:12px!important;margin-bottom:12px!important}.rs-card{padding:13px 15px!important}.rs-box{height:220px!important}.rs-r3 .rs-box{height:200px!important}
-.rs-kera{display:none!important}#ringkasan:not(.rs-more-open) .rs-kera{display:none!important}
-#themeBtn{display:none!important}
-#staffNotice{background:#0b2a49!important;color:#dbeaff!important;border:1px solid var(--line)!important}
-#stokTbl th,#mutuTbl th,#klTbl th{background:#0b2a49!important;color:#8fc8ff!important}
-@media(max-width:900px){:root{--side-w:0px;--hdr-h:76px}.app-sidebar{position:relative;top:auto;bottom:auto;width:100%;height:auto;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:8px!important}.side-nav{flex-direction:row;overflow-x:auto}.side-link{white-space:nowrap;flex:0 0 auto}.sidebar-brand{display:none}.dashboard-container{margin-left:0!important;padding:12px!important}.header-content{flex-wrap:wrap!important}.header-actions{gap:6px!important}.date-chip{font-size:.72rem;padding:8px 10px}.rs-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rs-r2,.rs-r3{grid-template-columns:1fr!important}}
-@media(max-width:520px){.rs-kpis{grid-template-columns:1fr!important}.rs-top h2{font-size:1.1rem}.rs-donut{flex-direction:column}.rs-dbox{width:100%;flex:none}}
-</style>
-<script>/* Kunci tema agar semua halaman konsisten dan tidak mengikuti preferensi tema lama. */
-(function(){try{localStorage.removeItem('permata_theme')}catch(e){};document.documentElement.removeAttribute('data-theme');})();
-</script>
-
 </head>
 <body class="locked" data-view="home">
 
@@ -3346,65 +3308,5 @@ var PANDUAN = [
   renderTasksDashboard();
 })();
 </script>
-
-<style id="permata-chart-palette-fix">
-/* Grafik: warna selaras dengan tema navy, kontras dan mudah dibaca */
-.chart-card, .chart-wrap, .chart-container, .canvas-wrap { background:transparent!important; }
-canvas { color:#eaf3ff!important; }
-.chart-head h3,.chart-card .chart-title { color:#f3f7ff!important; }
-</style>
-<script id="permata-chart-palette-fix-js">
-(function(){
-  var palette=['#2496ff','#31d6a0','#ffb23f','#a779ff','#16c7d4','#ff65b3','#7bc8ff','#f27d52'];
-  function install(){
-    if(!window.Chart || !Chart.register || window.__permataNavyChartPalette)return;
-    window.__permataNavyChartPalette=true;
-    try{
-      Chart.defaults.color='#dce9fb';
-      Chart.defaults.borderColor='rgba(145,180,220,.18)';
-      Chart.defaults.font.family="'Poppins','Segoe UI',Tahoma,sans-serif";
-      Chart.defaults.plugins.legend.labels.color='#dce9fb';
-      Chart.defaults.plugins.tooltip.backgroundColor='#071a2d';
-      Chart.defaults.plugins.tooltip.titleColor='#ffffff';
-      Chart.defaults.plugins.tooltip.bodyColor='#e5efff';
-      Chart.defaults.plugins.tooltip.borderColor='rgba(70,155,240,.5)';
-      Chart.defaults.plugins.tooltip.borderWidth=1;
-    }catch(e){}
-    var p={id:'permataNavyPalette',beforeUpdate:function(chart){
-      var type=chart.config.type;
-      var sets=chart.data&&chart.data.datasets||[];
-      sets.forEach(function(ds,i){
-        var label=String(ds.label||'').toLowerCase();
-        var target=label.indexOf('target')>=0 || label.indexOf('sangat baik')>=0;
-        if(target){
-          ds.borderColor=label.indexOf('target')>=0?'#ffb23f':'#31d6a0';
-          ds.backgroundColor=ds.borderColor;
-          if(type==='line'||ds.type==='line'){ds.borderDash=[6,5];ds.pointRadius=0;}
-          return;
-        }
-        var c=palette[i%palette.length];
-        if(type==='doughnut'||type==='pie'||type==='polarArea'){
-          ds.backgroundColor=palette.slice(0,(ds.data||[]).length);
-          ds.borderColor='#0b2037';ds.borderWidth=2;
-        }else if(type==='line'||ds.type==='line'){
-          ds.borderColor=c;ds.backgroundColor=c;ds.pointBackgroundColor=c;ds.pointBorderColor='#0b2037';
-          ds.pointHoverBackgroundColor='#ffffff';ds.pointHoverBorderColor=c;
-        }else{
-          ds.backgroundColor=Array.isArray(ds.backgroundColor)&&ds.backgroundColor.length===(ds.data||[]).length ? (ds.data||[]).map(function(_,j){return palette[j%palette.length];}) : c;
-          ds.borderColor=c;
-          if(ds.borderRadius===undefined)ds.borderRadius=4;
-        }
-      });
-      if(chart.options&&chart.options.scales){Object.keys(chart.options.scales).forEach(function(k){var a=chart.options.scales[k];a.ticks=a.ticks||{};a.ticks.color='#dce9fb';a.grid=a.grid||{};a.grid.color='rgba(145,180,220,.16)';if(a.title)a.title.color='#dce9fb';});}
-      if(chart.options&&chart.options.plugins&&chart.options.plugins.legend&&chart.options.plugins.legend.labels){chart.options.plugins.legend.labels.color='#dce9fb';}
-    }};
-    Chart.register(p);
-    try{var all=Chart.instances||{};Object.keys(all).forEach(function(k){try{all[k].update();}catch(e){}});}catch(e){}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
-  var n=0,t=setInterval(function(){install();if(window.__permataNavyChartPalette||++n>20)clearInterval(t);},250);
-})();
-</script>
-
 </body>
 </html>
