@@ -1167,6 +1167,7 @@ table.hm tr:nth-child(2n) td.c{animation-delay:.08s}table.hm tr:nth-child(3n) td
 
 
 <style id="layout-dashboard">
+.card.f-hide,.horizontal-grid.f-hide,.section-title.f-hide{display:none!important}
 /* ===== PERMATA LAB — dashboard 3 kolom, palet hijau Puskesmas ===== */
 :root{
   --bg-a:#f2f6f4;--bg-b:#f2f6f4;--panel:#fff;--panel-2:#f3f7f5;--panel-3:#e3eee9;
@@ -2146,15 +2147,15 @@ body.locked .right-panel{display:none!important}
       document.querySelectorAll('.horizontal-grid[data-group] .card, #favGrid .card').forEach(c => {
         const allowed = (_staff || !c.hasAttribute('data-internal'));
         const matches = !q || c.textContent.toLowerCase().includes(q);
-        c.style.display = allowed && matches ? 'flex' : 'none';
+        c.style.display = ''; c.classList.toggle('f-hide', !(allowed && matches));
       });
       let any = false;
       document.querySelectorAll('.section-title[data-category]').forEach(t => {
         const g = t.nextElementSibling;
-        const has = Array.from(g.querySelectorAll('.card')).some(c => c.style.display !== 'none');
+        const has = Array.from(g.querySelectorAll('.card')).some(c => !c.classList.contains('f-hide'));
         const show = selectedCategory !== 'home' && (selectedCategory === 'all' || t.getAttribute('data-category') === selectedCategory) && has;
-        t.style.display = show ? 'flex' : 'none';
-        g.style.display = show ? 'grid' : 'none';
+        t.style.display = ''; g.style.display = '';
+        t.classList.toggle('f-hide', !show); g.classList.toggle('f-hide', !show);
         if (show) any = true;
       });
       const empty = document.getElementById('emptyMsg');
@@ -2172,7 +2173,7 @@ body.locked .right-panel{display:none!important}
       });
       const favWrap = document.getElementById('favWrap');
       if (favWrap) {
-        const favHas = Array.from(document.querySelectorAll('#favGrid .card')).some(c => c.style.display !== 'none');
+        const favHas = Array.from(document.querySelectorAll('#favGrid .card')).some(c => !c.classList.contains('f-hide'));
         favWrap.style.display = _staff && favHas && selectedCategory !== 'home' ? 'block' : 'none';
       }
     }
