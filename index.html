@@ -9,18 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>PERMATA LAB - UPTD Puskesmas Sanga-sanga 2026</title>
   <script>
-  // Tema tampilan: "keramik" (bawaan) atau "biru". Disimpan per perangkat.
-  (function(){var t=null;try{t=localStorage.getItem('permata_theme');}catch(e){}
-    if(t==='biru')document.documentElement.setAttribute('data-theme','biru');})();
+  // Tema tunggal PERMATA LAB: navy gelap.
+  document.documentElement.setAttribute('data-theme','biru');
   function updateThemeBtn(){var b=document.getElementById('themeBtn');if(!b)return;
     var biru=document.documentElement.getAttribute('data-theme')==='biru';
     var l=b.querySelector('.lbl');if(l)l.textContent=biru?'Tema Keramik':'Tema Biru';
     b.setAttribute('aria-label',biru?'Ganti ke tema Keramik':'Ganti ke tema Biru');b.setAttribute('aria-pressed',biru?'true':'false');}
-  function toggleTheme(){var biru=document.documentElement.getAttribute('data-theme')==='biru';
-    if(biru)document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme','biru');
-    try{localStorage.setItem('permata_theme',biru?'keramik':'biru');}catch(e){}
-    updateThemeBtn();
-    if(window.permataChartRefresh){try{permataChartRefresh();}catch(e){}}}
+  function toggleTheme(){document.documentElement.setAttribute('data-theme','biru');updateThemeBtn();}
   document.addEventListener('DOMContentLoaded',updateThemeBtn);
   </script>
   <style>
@@ -3351,5 +3346,65 @@ var PANDUAN = [
   renderTasksDashboard();
 })();
 </script>
+
+<style id="permata-chart-palette-fix">
+/* Grafik: warna selaras dengan tema navy, kontras dan mudah dibaca */
+.chart-card, .chart-wrap, .chart-container, .canvas-wrap { background:transparent!important; }
+canvas { color:#eaf3ff!important; }
+.chart-head h3,.chart-card .chart-title { color:#f3f7ff!important; }
+</style>
+<script id="permata-chart-palette-fix-js">
+(function(){
+  var palette=['#2496ff','#31d6a0','#ffb23f','#a779ff','#16c7d4','#ff65b3','#7bc8ff','#f27d52'];
+  function install(){
+    if(!window.Chart || !Chart.register || window.__permataNavyChartPalette)return;
+    window.__permataNavyChartPalette=true;
+    try{
+      Chart.defaults.color='#dce9fb';
+      Chart.defaults.borderColor='rgba(145,180,220,.18)';
+      Chart.defaults.font.family="'Poppins','Segoe UI',Tahoma,sans-serif";
+      Chart.defaults.plugins.legend.labels.color='#dce9fb';
+      Chart.defaults.plugins.tooltip.backgroundColor='#071a2d';
+      Chart.defaults.plugins.tooltip.titleColor='#ffffff';
+      Chart.defaults.plugins.tooltip.bodyColor='#e5efff';
+      Chart.defaults.plugins.tooltip.borderColor='rgba(70,155,240,.5)';
+      Chart.defaults.plugins.tooltip.borderWidth=1;
+    }catch(e){}
+    var p={id:'permataNavyPalette',beforeUpdate:function(chart){
+      var type=chart.config.type;
+      var sets=chart.data&&chart.data.datasets||[];
+      sets.forEach(function(ds,i){
+        var label=String(ds.label||'').toLowerCase();
+        var target=label.indexOf('target')>=0 || label.indexOf('sangat baik')>=0;
+        if(target){
+          ds.borderColor=label.indexOf('target')>=0?'#ffb23f':'#31d6a0';
+          ds.backgroundColor=ds.borderColor;
+          if(type==='line'||ds.type==='line'){ds.borderDash=[6,5];ds.pointRadius=0;}
+          return;
+        }
+        var c=palette[i%palette.length];
+        if(type==='doughnut'||type==='pie'||type==='polarArea'){
+          ds.backgroundColor=palette.slice(0,(ds.data||[]).length);
+          ds.borderColor='#0b2037';ds.borderWidth=2;
+        }else if(type==='line'||ds.type==='line'){
+          ds.borderColor=c;ds.backgroundColor=c;ds.pointBackgroundColor=c;ds.pointBorderColor='#0b2037';
+          ds.pointHoverBackgroundColor='#ffffff';ds.pointHoverBorderColor=c;
+        }else{
+          ds.backgroundColor=Array.isArray(ds.backgroundColor)&&ds.backgroundColor.length===(ds.data||[]).length ? (ds.data||[]).map(function(_,j){return palette[j%palette.length];}) : c;
+          ds.borderColor=c;
+          if(ds.borderRadius===undefined)ds.borderRadius=4;
+        }
+      });
+      if(chart.options&&chart.options.scales){Object.keys(chart.options.scales).forEach(function(k){var a=chart.options.scales[k];a.ticks=a.ticks||{};a.ticks.color='#dce9fb';a.grid=a.grid||{};a.grid.color='rgba(145,180,220,.16)';if(a.title)a.title.color='#dce9fb';});}
+      if(chart.options&&chart.options.plugins&&chart.options.plugins.legend&&chart.options.plugins.legend.labels){chart.options.plugins.legend.labels.color='#dce9fb';}
+    }};
+    Chart.register(p);
+    try{var all=Chart.instances||{};Object.keys(all).forEach(function(k){try{all[k].update();}catch(e){}});}catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+  var n=0,t=setInterval(function(){install();if(window.__permataNavyChartPalette||++n>20)clearInterval(t);},250);
+})();
+</script>
+
 </body>
 </html>
