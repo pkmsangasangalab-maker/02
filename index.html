@@ -1716,7 +1716,7 @@ html:has(body[data-view="stok"]),html:has(body[data-view="kelurahan"]){backgroun
       <i class="fa-solid fa-boxes-stacked"></i> STOK, PERALATAN & KONTROL MUTU
     </div>
     <div class="horizontal-grid" data-group="stok">
-      <a rel="noopener noreferrer" data-internal href="https://docs.google.com/spreadsheets/d/1cwQoPEtHT33xWXUfFA05P14LKhrZje438RFLBFmNRts/edit?gid=1152592586#gid=1152592586" target="_blank" class="card">
+      <a rel="noopener noreferrer" data-internal href="https://docs.google.com/spreadsheets/d/1axwil6eYFLv8OPg44DwEL0SHawrB5r_tdzWnhR78clg/edit" target="_blank" class="card">
         <div class="icon">📦</div>
         <div>
           <h3>REKAP STOK, PENERIMAAN DAN PEMERIKSAAN LAB</h3>
@@ -2742,9 +2742,8 @@ var PANDUAN = [
 <script>
 // Stok reagensia: dibaca langsung dari Google Sheets (sheet harus bisa dilihat siapa pun yang punya link)
 (function(){
-  var SID='1cwQoPEtHT33xWXUfFA05P14LKhrZje438RFLBFmNRts', GID='2044629781';
-  var URL_CSV='https://docs.google.com/spreadsheets/d/'+SID+'/gviz/tq?tqx=out:csv&gid='+GID;
-  var URL_SHEET='https://docs.google.com/spreadsheets/d/'+SID+'/edit?gid='+GID;
+  var SID='1axwil6eYFLv8OPg44DwEL0SHawrB5r_tdzWnhR78clg';
+  var URL_SHEET='https://docs.google.com/spreadsheets/d/'+SID+'/edit';
   // Aturan order mengikuti sheet: kolom "Keterangan" = ORDER bila stok akhir <= buffer stok (tab BUFFER).
   var $=function(i){return document.getElementById(i);}, bulan=[], loaded=false, timer=null;
   var esc=function(t){return String(t).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});};
@@ -3019,13 +3018,55 @@ var PANDUAN = [
       options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false}}},
       plugins:[{id:'dkc',afterDraw:function(ch){var a=ch.chartArea,c=ch.ctx,x=(a.left+a.right)/2,y=(a.top+a.bottom)/2;c.save();c.textAlign='center';c.fillStyle='#fff';c.font='700 26px Poppins,sans-serif';c.fillText(n,x,y+6);c.fillStyle='#b9c9ee';c.font='10px Poppins,sans-serif';c.fillText('Total Reagensia',x,y+22);c.restore();}}]});
   }
+  // ----- Sumber baru: stok dihitung per bulan dari tab MASTER REAGEN dan LOG TRANSAKSI -----
+  var BLN_NAMA=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  var TAHUN_AWAL=2026;
+  function tabUrl(nama){return 'https://docs.google.com/spreadsheets/d/'+SID+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent(nama)+'&_='+Date.now();}
+  function cekTeks(t){if(/^\s*</.test(t))throw new Error('Google meminta login, sheet belum publik');return t;}
+  function ambil(nama){return fetch(tabUrl(nama),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status+' ('+nama+')');return r.text();}).then(cekTeks).then(csv);}
+  function tglRow(s){var m=/^\s*(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/.exec(String(s||''));return m?{d:+m[1],m:+m[2],y:+m[3]}:null;}
+  function kolom(h,re){for(var i=0;i<h.length;i++){if(re.test(h[i]))return i;}return -1;}
+  function bangun(master,log){
+    var hM=master[0].map(function(x){return String(x||'').trim().toLowerCase();});
+    var cK=kolom(hM,/^nama reagen/), cS=kolom(hM,/^sumber$/), cA=kolom(hM,/^stok awal/), cB=kolom(hM,/^buffer/), cAk=kolom(hM,/^aktif$/);
+    var reag={}, urut=[];
+    function tambah(nm,obj){if(!reag[nm]){reag[nm]=obj;urut.push(nm);}return reag[nm];}
+    master.slice(1).forEach(function(r){
+      var nm=String(r[cK]||'').trim(); if(!nm)return;
+      tambah(nm,{s:String(r[cS]||'').trim(),awal:num(r[cA])||0,buf:num(r[cB]),aktif:/^ya$/i.test(String(r[cAk]||'').trim()),mv:{}});
+    });
+    var hL=log[0].map(function(x){return String(x||'').trim().toLowerCase();});
+    var cT=kolom(hL,/^tanggal/), cN=kolom(hL,/^nama reagen/), cJ=kolom(hL,/^jenis/), cQ=kolom(hL,/^jumlah/);
+    var maxIdx=0;
+    log.slice(1).forEach(function(r){
+      var t=tglRow(r[cT]); if(!t)return;
+      var nm=String(r[cN]||'').trim(); if(!nm)return;
+      var R=tambah(nm,{s:'',awal:0,buf:null,aktif:true,mv:{}});
+      var jn=String(r[cJ]||'').trim().toLowerCase(), q=num(r[cQ])||0;
+      var k=t.y*100+t.m, sel=R.mv[k]||(R.mv[k]={i:0,o:0});
+      if(/masuk/.test(jn))sel.i+=q; else if(/keluar/.test(jn))sel.o+=q;
+      maxIdx=Math.max(maxIdx,(t.y-TAHUN_AWAL)*12+t.m-1);
+    });
+    var running={}; urut.forEach(function(nm){running[nm]=reag[nm].awal;});
+    var out=[];
+    for(var idx=0;idx<=maxIdx;idx++){
+      var y=TAHUN_AWAL+Math.floor(idx/12), m=idx%12+1, k2=y*100+m, items=[];
+      urut.forEach(function(nm){
+        var R=reag[nm], mv=R.mv[k2]||{i:0,o:0}, a=running[nm], e=a+mv.i-mv.o;
+        running[nm]=e;
+        if(!R.aktif&&!mv.i&&!mv.o)return;
+        items.push({n:nm,s:R.s,a:a,i:mv.i,o:mv.o,e:e,b:R.buf,k:''});
+      });
+      if(items.length)out.push({name:BLN_NAMA[m-1],yr:y,items:items});
+    }
+    return out;
+  }
   function load(){
     $('stokNote').textContent='Memuat data…';
-    fetch(URL_CSV+'&_='+Date.now()).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();}).then(function(t){
-      if(/^\s*</.test(t))throw new Error('Google meminta login, sheet belum publik');
-      var d=parse(csv(t)); if(!d.length)throw new Error('judul "Nama Reagen" tidak ditemukan, '+t.length+' karakter diterima, baris pertama: '+csv(t.slice(0,1500))[0].slice(0,5).join(' | '));
+    Promise.all([ambil('MASTER REAGEN'),ambil('LOG TRANSAKSI')]).then(function(h){
+      var d=bangun(h[0],h[1]); if(!d.length)throw new Error('data LOG TRANSAKSI kosong');
       var keep=bulan.length?$('stokBulan').selectedIndex:-1; bulan=d; fillReagen(); skReagenFill(); fillTahun();
-      $('stokBulan').innerHTML=d.map(function(x,i){return '<option>'+esc(x.name)+'</option>';}).join('');
+      $('stokBulan').innerHTML=d.map(function(x){return '<option>'+esc(x.name)+'</option>';}).join('');
       var def=d.length-1; for(var i=d.length-1;i>=0;i--){if(d[i].items.some(function(x){return x.o>0||x.i>0;})){def=i;break;}}
       $('stokBulan').selectedIndex=keep>=0&&keep<d.length?keep:def; applyTahun(true); render();
       $('stokNote').innerHTML='Diperbarui '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})+' dari Google Sheets. <a href="'+URL_SHEET+'" target="_blank" rel="noopener noreferrer">Buka spreadsheet</a>';
@@ -3269,10 +3310,10 @@ var PANDUAN = [
 })();
 </script>
 <script>
-// ===== Tren pemeriksaan per kelurahan (Google Sheets, tab "RKP PEMERIKSAAN BY KELURAHAN") =====
+// ===== Tren pemeriksaan per kelurahan (Google Sheets, tab "REKAP KELURAHAN") =====
 (function(){
-  var SID='1cwQoPEtHT33xWXUfFA05P14LKhrZje438RFLBFmNRts', GID='152814183';
-  var URL_SHEET='https://docs.google.com/spreadsheets/d/'+SID+'/edit?gid='+GID;
+  var SID='1axwil6eYFLv8OPg44DwEL0SHawrB5r_tdzWnhR78clg', TAB='REKAP KELURAHAN';
+  var URL_SHEET='https://docs.google.com/spreadsheets/d/'+SID+'/edit';
   // Tahun yang belum penuh: jumlah bulan yang sudah terisi. Label di sheet (mis. "JANUARI-SEPTEMBER") otomatis diutamakan.
   var BULAN_TERISI={2026:9};
   var BLN=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
@@ -3506,11 +3547,27 @@ var PANDUAN = [
       plugins:[{id:'dkv',afterDatasetsDraw:function(ch){var c=ch.ctx;c.save();c.fillStyle='#fff';c.font='600 12px Poppins,sans-serif';c.textAlign='center';ch.getDatasetMeta(0).data.forEach(function(b,i){c.fillText(fv(ch.data.datasets[0].data[i],st),b.x,b.y-5);});c.restore();}}]});
   }
   function render(){var st=state(); kpi(st); top5(st); charts(st); heat(st); table(st); note(); dkK(st);}
+  // Tab REKAP KELURAHAN: blok "TAHUN 2026" berisi input dari tab INPUT KELURAHAN. Selama masih kosong,
+  // data 2026 diambil dari blok "RIWAYAT 2026 (Januari–September)" (format lama).
+  function siapkan(rows){
+    var iRiw=-1, iTh=-1, i, j, c, sum=0;
+    for(i=0;i<rows.length;i++){var c0=String(rows[i][0]||'').trim();
+      if(/^riwayat\s+2026/i.test(c0))iRiw=i;
+      if(/^tahun\s+2026$/i.test(c0))iTh=i;}
+    if(iRiw<0||iTh<0)return rows;
+    for(j=iTh+1;j<rows.length;j++){
+      if(/^total$/i.test(String(rows[j][0]||'').trim()))break;
+      for(c=1;c<rows[j].length;c++)sum+=num(rows[j][c]);}
+    if(sum>0)return rows;
+    rows[iTh][0]='INPUT 2026 (belum terisi)';
+    rows[iRiw][0]='TAHUN 2026';
+    return rows;
+  }
   function load(){
     var b=$('klMuat'); b.disabled=true;
-    fetch('https://docs.google.com/spreadsheets/d/'+SID+'/gviz/tq?tqx=out:csv&gid='+GID+'&_='+Date.now(),{cache:'no-store'})
+    fetch('https://docs.google.com/spreadsheets/d/'+SID+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent(TAB)+'&_='+Date.now(),{cache:'no-store'})
       .then(function(r){if(!r.ok)throw new Error(r.status);return r.text();})
-      .then(function(t){if(/^\s*</.test(t))throw new Error('login'); var d=parse(csv(t)); if(!d.years.length||!d.kel.length)throw new Error('kosong'); D=d; live=true; fillSelects();})
+      .then(function(t){if(/^\s*</.test(t))throw new Error('login'); var d=parse(siapkan(csv(t))); if(!d.years.length||!d.kel.length)throw new Error('kosong'); D=d; live=true; fillSelects();})
       .catch(function(e){console.warn('Sheet kelurahan tidak dimuat, pakai cadangan:',e); live=false;})
       .then(function(){b.disabled=false; render();});
   }
