@@ -1403,21 +1403,28 @@ html:has(body[data-view="stok"]),html:has(body[data-view="hari"]){background:#06
 :is(body[data-view="stok"],body[data-view="hari"]) .hd-title h1{color:#fff!important}:is(body[data-view="stok"],body[data-view="hari"]) .hd-title p{color:#9fb6e6!important}
 :is(body[data-view="stok"],body[data-view="hari"]) .date-chip{background:rgba(255,255,255,.08)!important;color:#dbe7ff!important}
 
-/* ===== Pemeriksaan per hari ===== */
-#hariLive .section-title{color:#fff}
-#hariLive .chart-card{background:rgba(255,255,255,.04);border:1px solid rgba(80,140,255,.2);border-radius:14px}
-#hariLive .kpi{background:rgba(255,255,255,.05);border-color:rgba(80,140,255,.25)}
-#hariLive .kpi b{color:#fff}
-#hariLive .kpi small,#hariLive .kpi span{color:#9fb6e6}
-#hariLive h3{color:#fff}
-#hariLive .chart-note,#hrNote{color:#9fb6e6;font-size:.78rem}
-#hariLive .stok-tools select{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(80,140,255,.3);border-radius:10px;padding:8px 10px}
-#hariLive .stok-tools select option{color:#0f172a}
-#hrHeat,#hrTbl{width:100%;border-collapse:collapse;font-size:.82rem;color:#e6eeff}
-#hrHeat th,#hrTbl th{position:sticky;top:0;background:rgba(10,32,84,.9);text-align:right;padding:8px;color:#9fb6e6;font-size:.72rem;text-transform:uppercase;white-space:nowrap}
-#hrHeat td,#hrTbl td{padding:7px 8px;border-top:1px solid rgba(255,255,255,.08);text-align:right;font-variant-numeric:tabular-nums;min-width:60px}
-#hrHeat th:first-child,#hrHeat td:first-child,#hrTbl th:first-child,#hrTbl td:first-child{text-align:left}
-#hrTbl tr.tot td{font-weight:700;background:rgba(255,255,255,.05)}
+/* ===== Pemeriksaan per hari: tema biru, teks terbaca (menimpa aturan tema terang) ===== */
+#hariLive .section-title{color:#fff!important;background:rgba(29,111,224,.22)!important;border:1px solid rgba(80,140,255,.35)!important}
+#hariLive .section-title svg{color:#7cc4ff!important}
+#hariLive .chart-card{background:rgba(255,255,255,.05)!important;border:1px solid rgba(80,140,255,.25)!important;box-shadow:none!important;color:#e6eeff!important}
+#hariLive .chart-head{background:transparent!important}
+#hariLive .chart-head h3,#hariLive .chart-card h3{color:#fff!important;font-weight:600!important}
+#hariLive .chart-note,#hariLive #hrNote{color:#b9cdf0!important;font-size:.8rem!important}
+#hariLive #hrNote a{color:#7cc4ff!important;text-decoration:underline}
+#hariLive .kpi{background:rgba(255,255,255,.06)!important;border:1px solid rgba(80,140,255,.25)!important;border-left:4px solid #1d6fe0!important}
+#hariLive .kpi b{color:#fff!important;font-weight:700!important}
+#hariLive .kpi small{color:#9fb6e6!important;text-transform:uppercase!important;letter-spacing:.5px!important;font-size:.74rem!important}
+#hariLive .kpi span{color:#b9cdf0!important}
+#hariLive .stok-tools{background:rgba(255,255,255,.04)!important;border:1px solid rgba(80,140,255,.2)!important;border-radius:12px}
+#hariLive .stok-tools select{background:#0f2a66!important;color:#fff!important;border:1px solid rgba(80,140,255,.45)!important;border-radius:10px!important;box-shadow:none!important;padding:8px 10px!important}
+#hariLive .stok-tools select option{background:#fff!important;color:#0f172a!important}
+#hariLive .btn-action{background:#1d6fe0!important;color:#fff!important;border:0!important}
+#hariLive .stok-wrap{background:rgba(5,15,46,.5)!important;border:1px solid rgba(80,140,255,.25)!important;border-radius:10px!important}
+#hrHeat,#hrTbl{width:100%;border-collapse:collapse;font-size:.85rem}
+#hrHeat th,#hrTbl th{position:sticky;top:0;background:#0a2054!important;color:#9fb6e6!important;text-align:right;padding:9px 8px;font-size:.72rem;text-transform:uppercase;white-space:nowrap;font-weight:600}
+#hrHeat td,#hrTbl td{padding:8px;border-top:1px solid rgba(255,255,255,.12);text-align:right;font-variant-numeric:tabular-nums;color:#f1f6ff!important;min-width:60px}
+#hrHeat th:first-child,#hrHeat td:first-child,#hrTbl th:first-child,#hrTbl td:first-child{text-align:left;font-weight:600}
+#hrTbl tr.tot td{font-weight:700!important;background:rgba(255,255,255,.08)!important}
 
 #stokLive>.section-title,#stokLive>.chart-card,#kelLive>.section-title{display:none!important}
 #kelLive>.chart-card>*{display:none!important}
