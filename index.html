@@ -700,6 +700,7 @@ body:not([data-view="ringkasan"]) [data-view="ringkasan"],
 body:not([data-view="backup"]) [data-view="backup"],
 body:not([data-view="panduan"]) [data-view="panduan"],
 body:not([data-view="kelurahan"]) [data-view="kelurahan"],
+body:not([data-view="hari"]) [data-view="hari"],
 body:not([data-view="tentang"]) [data-view="tentang"]{display:none!important}
 /* tautan layanan hanya di Beranda + Mode Petugas */
 body:not(.staff) .section-title[data-category],body:not(.staff) .horizontal-grid[data-group],body:not(.staff) #favWrap,body:not(.staff) #emptyMsg,body:not(.staff) .control-panel,body:not(.staff) #staffNotice,
@@ -1388,6 +1389,36 @@ html:has(body[data-view="stok"]),html:has(body[data-view="kelurahan"]){backgroun
 :is(body[data-view="stok"],body[data-view="kelurahan"]) header .header-content{background:rgba(10,32,84,.75);border-color:rgba(80,140,255,.28);box-shadow:none}
 :is(body[data-view="stok"],body[data-view="kelurahan"]) .hd-title h1{color:#fff!important}:is(body[data-view="stok"],body[data-view="kelurahan"]) .hd-title p{color:#9fb6e6!important}
 :is(body[data-view="stok"],body[data-view="kelurahan"]) .date-chip{background:rgba(255,255,255,.08)!important;color:#dbe7ff!important}
+:is(body[data-view="stok"],body[data-view="hari"]){background:linear-gradient(160deg,#050f2e,#0a2559 60%,#06163d) fixed!important}
+html:has(body[data-view="stok"]),html:has(body[data-view="hari"]){background:#06143a!important}
+:is(body[data-view="stok"],body[data-view="hari"]) .app-sidebar{background:linear-gradient(180deg,#071a47,#06143a)!important;border-right:1px solid rgba(80,140,255,.2)!important}
+:is(body[data-view="stok"],body[data-view="hari"]) .side-link.active{background:#1d6fe0!important;box-shadow:none!important}
+:is(body[data-view="stok"],body[data-view="hari"]) .side-link.active .ic{color:#fff!important}
+:is(body[data-view="stok"],body[data-view="hari"]) .sidebar-brand .ic{color:#7cc4ff}
+:is(body[data-view="stok"],body[data-view="hari"]) .side-user{background:rgba(255,255,255,.07)}
+:is(body[data-view="stok"],body[data-view="hari"]) .su-name{color:#fff}:is(body[data-view="stok"],body[data-view="hari"]) .su-role{color:#9fb6e6}
+:is(body[data-view="stok"],body[data-view="hari"]) .su-actions .btn-action{background:rgba(255,255,255,.1)!important;color:#fff!important}
+:is(body[data-view="stok"],body[data-view="hari"]) .su-actions .btn-action.primary{background:#1d6fe0!important}
+:is(body[data-view="stok"],body[data-view="hari"]) header .header-content{background:rgba(10,32,84,.75);border-color:rgba(80,140,255,.28);box-shadow:none}
+:is(body[data-view="stok"],body[data-view="hari"]) .hd-title h1{color:#fff!important}:is(body[data-view="stok"],body[data-view="hari"]) .hd-title p{color:#9fb6e6!important}
+:is(body[data-view="stok"],body[data-view="hari"]) .date-chip{background:rgba(255,255,255,.08)!important;color:#dbe7ff!important}
+
+/* ===== Pemeriksaan per hari ===== */
+#hariLive .section-title{color:#fff}
+#hariLive .chart-card{background:rgba(255,255,255,.04);border:1px solid rgba(80,140,255,.2);border-radius:14px}
+#hariLive .kpi{background:rgba(255,255,255,.05);border-color:rgba(80,140,255,.25)}
+#hariLive .kpi b{color:#fff}
+#hariLive .kpi small,#hariLive .kpi span{color:#9fb6e6}
+#hariLive h3{color:#fff}
+#hariLive .chart-note,#hrNote{color:#9fb6e6;font-size:.78rem}
+#hariLive .stok-tools select{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(80,140,255,.3);border-radius:10px;padding:8px 10px}
+#hariLive .stok-tools select option{color:#0f172a}
+#hrHeat,#hrTbl{width:100%;border-collapse:collapse;font-size:.82rem;color:#e6eeff}
+#hrHeat th,#hrTbl th{position:sticky;top:0;background:rgba(10,32,84,.9);text-align:right;padding:8px;color:#9fb6e6;font-size:.72rem;text-transform:uppercase;white-space:nowrap}
+#hrHeat td,#hrTbl td{padding:7px 8px;border-top:1px solid rgba(255,255,255,.08);text-align:right;font-variant-numeric:tabular-nums;min-width:60px}
+#hrHeat th:first-child,#hrHeat td:first-child,#hrTbl th:first-child,#hrTbl td:first-child{text-align:left}
+#hrTbl tr.tot td{font-weight:700;background:rgba(255,255,255,.05)}
+
 #stokLive>.section-title,#stokLive>.chart-card,#kelLive>.section-title{display:none!important}
 #kelLive>.chart-card>*{display:none!important}
 #kelLive.dk-more>.chart-card>.kl-heat,#kelLive.dk-more>.chart-card>.stok-wrap{display:block!important;background:#fff;color:#16302a;border-radius:12px;padding:12px;margin-bottom:14px}
@@ -1507,6 +1538,7 @@ html:has(body[data-view="stok"]),html:has(body[data-view="kelurahan"]){backgroun
       <button class="side-link" data-nav="stok" onclick="setView('stok', this)"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6L5 19a1.6 1.6 0 0 0 1.4 2.3h11.2A1.6 1.6 0 0 0 19 19l-5-10V3"/><path d="M7.5 15h9"/></svg><span class="lbl">Stok Reagensia</span></button>
       <button class="side-link" data-nav="ringkasan" onclick="setView('ringkasan', this)"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="m5 15 4-4 3 3 6-7"/><path d="M15 7h3v3"/></svg><span class="lbl">Ringkasan Laporan<br>Tahunan Lab</span></button>
       <button class="side-link" data-nav="kelurahan" onclick="setView('kelurahan', this)"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span class="lbl">Tren per Kelurahan</span></button>
+      <button class="side-link" data-nav="hari" onclick="setView('hari', this)"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="lbl">Pemeriksaan per Hari</span></button>
       <div class="side-label staff-only">MENU PETUGAS</div>
       <button class="side-link staff-only" data-nav="cat-laporan" onclick="openLinkCat('laporan')"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 17v-3M12 17v-5M15 17v-2"/></svg><span class="lbl">Laporan &amp; Profil</span><span class="chev">›</span></button>
       <button class="side-link staff-only" data-nav="cat-aplikasi" onclick="openLinkCat('aplikasi')"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="12" rx="2"/><path d="M8 20h8M12 16.5V20"/></svg><span class="lbl">Aplikasi &amp; Sistem Pelaporan</span><span class="chev">›</span></button>
@@ -1993,6 +2025,36 @@ html:has(body[data-view="stok"]),html:has(body[data-view="kelurahan"]){backgroun
         <p id="klNote">Memuat data…</p>
       </div>
     </section>
+
+  <!-- Pemeriksaan berdasarkan hari (sumber: tab LAB JAN–DES, spreadsheet REKAP LAB DAN STOK OPNAME 2026) -->
+  <section id="hariLive" data-view="hari">
+    <div class="section-title"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg> PEMERIKSAAN BERDASARKAN HARI</div>
+    <div class="chart-card">
+      <div class="stok-tools">
+        <select id="hrBulan" aria-label="Pilih bulan"><option value="">Semua bulan (terisi)</option></select>
+        <select id="hrMode" aria-label="Pilih ukuran grafik"><option value="avg">Rata-rata per hari layanan</option><option value="sum">Jumlah pemeriksaan</option></select>
+        <button class="btn-action" id="hrMuat" type="button">🔄 Muat ulang</button>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi"><small>Total pemeriksaan</small><b id="hrKTot">–</b><span id="hrKTotS"></span></div>
+        <div class="kpi"><small>Hari layanan</small><b id="hrKHari">–</b><span>hari dengan pemeriksaan</span></div>
+        <div class="kpi"><small>Rata-rata per hari layanan</small><b id="hrKAvg">–</b><span>pemeriksaan per hari</span></div>
+        <div class="kpi"><small>Hari tersibuk</small><b id="hrKMax">–</b><span id="hrKMaxS"></span></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-card wide"><div class="chart-head"><h3 id="hrBarH">Rata-rata Pemeriksaan per Hari Layanan</h3></div><div class="chart-box" style="height:280px"><canvas id="chHrBar" role="img" aria-label="Grafik batang pemeriksaan per hari dalam seminggu"></canvas></div>
+          <p class="chart-note">Batang kuning = hari dengan nilai tertinggi. Hari tanpa pemeriksaan tidak dihitung sebagai hari layanan.</p></div>
+        <div class="chart-card wide"><div class="chart-head"><h3>Komposisi per Bulan</h3></div><div class="chart-box" style="height:280px"><canvas id="chHrStack" role="img" aria-label="Grafik batang bertumpuk jumlah pemeriksaan per hari dan bulan"></canvas></div>
+          <p class="chart-note">Jumlah pemeriksaan tiap hari, dipisah per bulan.</p></div>
+      </div>
+      <div class="chart-card wide"><div class="chart-head"><h3>Rata-rata per Hari Layanan: Hari × Bulan</h3></div>
+        <div class="stok-wrap"><table id="hrHeat"><thead></thead><tbody></tbody></table></div>
+        <p class="chart-note">Warna makin pekat = rata-rata makin tinggi. "–" = tidak ada hari layanan pada hari tersebut di bulan itu.</p></div>
+      <div class="chart-card wide"><div class="chart-head"><h3>Rincian per Hari</h3></div>
+        <div class="stok-wrap"><table id="hrTbl"><thead></thead><tbody></tbody></table></div></div>
+      <p id="hrNote">Memuat data…</p>
+    </div>
+  </section>
 
   <!-- Dashboard Tasks -->
   <section id="tasksDashboard" data-view="tasks" class="tasks-dashboard staff-only">
@@ -3710,6 +3772,136 @@ var PANDUAN = [
   window.dispatchEvent(new Event('resize'));
 })();
 
+</script>
+<script>
+// ===== Pemeriksaan berdasarkan hari: dibaca dari tab LAB JAN–DES (baris "Total harian") =====
+(function(){
+  var SID='1axwil6eYFLv8OPg44DwEL0SHawrB5r_tdzWnhR78clg', TAHUN=2026;
+  var BLN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  var KODE=['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV','DES'];
+  var URUT=[1,2,3,4,5,6,0]; // Senin..Minggu (getDay: 0=Minggu)
+  var TC='#b9c9ee', GR='rgba(255,255,255,.08)';
+  var PAL=['#1d6fe0','#34d399','#f5b301','#f472b6','#60a5fa','#fb923c','#a78bfa','#2dd4bf','#e5383b','#94a3b8','#c9d7f7','#fbbf24'];
+  var DAYS=null, HAS=[], busy=false, chBar=null, chStack=null;
+  var $=function(i){return document.getElementById(i);};
+  var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var fmt=function(n){return Number(n).toLocaleString('id-ID');};
+  var f1=function(n){return Number(n).toLocaleString('id-ID',{maximumFractionDigits:1,minimumFractionDigits:1});};
+  function num(v){var x=parseInt(String(v==null?'':v).replace(/[^\d]/g,''),10);return isNaN(x)?0:x;}
+  function namaHari(k){return ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][k];}
+  function csv(t){var r=[],row=[],f='',q=false,i,c;t=String(t).replace(/^\uFEFF/,'');
+    for(i=0;i<t.length;i++){c=t[i];
+      if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+      else if(c==='"')q=true; else if(c===','){row.push(f);f='';}
+      else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);r.push(row);row=[];f='';}
+      else f+=c;}
+    if(f!==''||row.length){row.push(f);r.push(row);} return r;}
+  // Kolom hari ke-d ada di indeks d+1 (indeks 0 = nama baris, 1 = kosong). Hari dalam minggu dihitung dari kalender.
+  function parseBulan(rows,mi){
+    var tr=null,i;
+    for(i=0;i<rows.length;i++){ if(/^total harian/i.test(String((rows[i]||[])[0]||'').trim())){tr=rows[i];break;} }
+    if(!tr)return [];
+    var dim=new Date(TAHUN,mi+1,0).getDate(), out=[];
+    for(var d=1;d<=dim;d++){out.push({mi:mi,d:d,wd:new Date(TAHUN,mi,d).getDay(),v:num(tr[d+1])});}
+    return out;
+  }
+  function ambil(mi){
+    var url='https://docs.google.com/spreadsheets/d/'+SID+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent('LAB '+KODE[mi])+'&_='+Date.now();
+    return fetch(url,{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
+      .then(function(t){if(/^\s*</.test(t))throw new Error('Google meminta login, sheet belum publik');return parseBulan(csv(t),mi);});
+  }
+  function note(h){$('hrNote').innerHTML=h;}
+  function load(){
+    if(busy)return; busy=true; note('Memuat data…');
+    var gagal=[];
+    Promise.all(KODE.map(function(k,mi){return ambil(mi).catch(function(){gagal.push(BLN[mi]);return [];});}))
+      .then(function(hasil){
+        DAYS=[].concat.apply([],hasil);
+        HAS=[]; KODE.forEach(function(k,mi){ if(DAYS.some(function(x){return x.mi===mi&&x.v>0;})) HAS.push(mi); });
+        if(!HAS.length)throw new Error('tidak ada data pemeriksaan');
+        var cur=$('hrBulan').value;
+        $('hrBulan').innerHTML='<option value="">Semua bulan (terisi)</option>'+HAS.map(function(mi){return '<option value="'+mi+'">'+BLN[mi]+' '+TAHUN+'</option>';}).join('');
+        $('hrBulan').value=(cur!==''&&HAS.indexOf(+cur)>-1)?cur:'';
+        render();
+        note('Sumber: spreadsheet REKAP LAB DAN STOK OPNAME 2026, tab LAB JAN–DES. Hari dalam minggu dihitung dari kalender '+TAHUN+'; hari tanpa pemeriksaan tidak dihitung sebagai hari layanan. Diperbarui '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})+'. '+
+          (gagal.length?'<b>Gagal dimuat: '+esc(gagal.join(', '))+'.</b> ':'')+
+          '<a href="https://docs.google.com/spreadsheets/d/'+SID+'/edit" target="_blank" rel="noopener noreferrer">Buka spreadsheet</a>');
+      })
+      .catch(function(e){note('Data pemeriksaan gagal dimuat ['+esc(e&&e.message?e.message:'gagal terhubung')+']. Pastikan spreadsheet bisa dilihat siapa pun yang punya link.');})
+      .then(function(){busy=false;});
+  }
+  function render(){
+    if(!DAYS)return;
+    var sel=$('hrBulan').value, mode=$('hrMode').value;
+    var list=DAYS.filter(function(x){return sel===''||x.mi===+sel;});
+    var w={}; URUT.forEach(function(k){w[k]={tot:0,hari:0};});
+    list.forEach(function(x){ if(x.v>0){w[x.wd].tot+=x.v; w[x.wd].hari+=1;} });
+    var tot=0,hari=0; URUT.forEach(function(k){tot+=w[k].tot;hari+=w[k].hari;});
+    var rata=hari?tot/hari:0, best=null;
+    URUT.forEach(function(k){ if(w[k].hari){var a=w[k].tot/w[k].hari; if(!best||a>best.a)best={k:k,a:a};} });
+    $('hrKTot').textContent=fmt(tot);
+    $('hrKTotS').textContent=sel===''?'Semua bulan yang terisi':BLN[+sel]+' '+TAHUN;
+    $('hrKHari').textContent=fmt(hari);
+    $('hrKAvg').textContent=f1(rata);
+    $('hrKMax').textContent=best?namaHari(best.k):'–';
+    $('hrKMaxS').textContent=best?'rata-rata '+f1(best.a)+' per hari layanan':'';
+    renderBar(w,mode);
+    renderStack(sel);
+    renderHeat();
+    renderTbl(w,tot);
+  }
+  function renderBar(w,mode){
+    var labels=URUT.map(namaHari);
+    var vals=URUT.map(function(k){return mode==='sum'?w[k].tot:(w[k].hari?Math.round(w[k].tot/w[k].hari*10)/10:0);});
+    var mx=Math.max.apply(null,vals);
+    $('hrBarH').textContent=mode==='sum'?'Jumlah Pemeriksaan per Hari':'Rata-rata Pemeriksaan per Hari Layanan';
+    if(typeof Chart==='undefined')return;
+    if(chBar)chBar.destroy();
+    chBar=new Chart($('chHrBar'),{type:'bar',data:{labels:labels,datasets:[{label:mode==='sum'?'Jumlah':'Rata-rata',data:vals,
+        backgroundColor:vals.map(function(v){return v===mx&&mx>0?'#f5b301':'#1d6fe0';}),borderRadius:6,maxBarThickness:56}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{x:{grid:{display:false},ticks:{color:TC}},y:{beginAtZero:true,grid:{color:GR},ticks:{color:TC}}}}});
+  }
+  function renderStack(sel){
+    if(typeof Chart==='undefined')return;
+    var bulan=sel===''?HAS:[+sel];
+    var ds=bulan.map(function(mi){
+      return {label:BLN[mi],backgroundColor:PAL[mi%PAL.length],borderRadius:3,
+        data:URUT.map(function(k){var t=0; DAYS.forEach(function(x){if(x.mi===mi&&x.wd===k&&x.v>0)t+=x.v;}); return t;})};});
+    if(chStack)chStack.destroy();
+    chStack=new Chart($('chHrStack'),{type:'bar',data:{labels:URUT.map(namaHari),datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,
+        scales:{x:{stacked:true,grid:{display:false},ticks:{color:TC}},y:{stacked:true,beginAtZero:true,grid:{color:GR},ticks:{color:TC}}},
+        plugins:{legend:{position:'bottom',labels:{color:TC}}}}});
+  }
+  function renderHeat(){
+    var cell={},max=0;
+    URUT.forEach(function(k){HAS.forEach(function(mi){
+      var t=0,h=0; DAYS.forEach(function(x){if(x.mi===mi&&x.wd===k&&x.v>0){t+=x.v;h++;}});
+      var a=h?t/h:null; cell[k+'_'+mi]=a; if(a!==null&&a>max)max=a;});});
+    $('hrHeat').tHead.innerHTML='<tr><th>Hari</th>'+HAS.map(function(mi){return '<th>'+BLN[mi].slice(0,3)+'</th>';}).join('')+'</tr>';
+    $('hrHeat').tBodies[0].innerHTML=URUT.map(function(k){
+      return '<tr><td>'+namaHari(k)+'</td>'+HAS.map(function(mi){
+        var a=cell[k+'_'+mi];
+        var bg=a===null?'transparent':'rgba(29,111,224,'+(0.12+0.78*a/max).toFixed(2)+')';
+        return '<td style="background:'+bg+'">'+(a===null?'–':f1(a))+'</td>';}).join('')+'</tr>';}).join('');
+  }
+  function renderTbl(w,tot){
+    $('hrTbl').tHead.innerHTML='<tr><th>Hari</th><th>Hari layanan</th><th>Total pemeriksaan</th><th>Rata-rata / hari layanan</th><th>% dari total</th></tr>';
+    var rows=URUT.map(function(k){
+      var a=w[k].hari?w[k].tot/w[k].hari:0;
+      return '<tr><td>'+namaHari(k)+'</td><td>'+fmt(w[k].hari)+'</td><td>'+fmt(w[k].tot)+'</td><td>'+f1(a)+'</td><td>'+(tot?f1(w[k].tot/tot*100)+'%':'–')+'</td></tr>';}).join('');
+    rows+='<tr class="tot"><td>Total</td><td>'+fmt(URUT.reduce(function(s,k){return s+w[k].hari;},0))+'</td><td>'+fmt(tot)+'</td><td>'+
+      f1(URUT.reduce(function(s,k){return s+w[k].hari;},0)?tot/URUT.reduce(function(s,k){return s+w[k].hari;},0):0)+'</td><td>100,0%</td></tr>';
+    $('hrTbl').tBodies[0].innerHTML=rows;
+  }
+  $('hrBulan').addEventListener('change',render);
+  $('hrMode').addEventListener('change',render);
+  $('hrMuat').addEventListener('click',load);
+  var nav=document.querySelector('[data-nav="hari"]');
+  if(nav)nav.addEventListener('click',function(){ if(!DAYS)load(); setTimeout(function(){render();window.dispatchEvent(new Event('resize'));},150); });
+  window.__hariParse=parseBulan; window.__hariCsv=csv;
+})();
 </script>
 </body>
 </html>
