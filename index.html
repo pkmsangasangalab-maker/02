@@ -3048,14 +3048,32 @@ var PANDUAN = [
   }
 
   /* ===== Tampilan gelap (sesuai mockup): kartu ringkasan, daftar stok, grafik kategori & status ===== */
-  var DK={p:1,ok:0,it:[]}, DKCOL=['#1d6fe0','#12a36c','#f5a800','#8b4ee0','#10b8d6'], DKCAT=['Kimia Klinik','Imunologi','Mikrobiologi','Hematologi','Urinalisa'], DKL={ok:'Aman',warn:'Menipis',bad:'Habis'};
-  // Sheet stok belum punya kolom kategori / satuan / expired: kategori ditebak dari nama reagen (ubah pola di sini bila perlu)
-  function dkCat(n){n=n.toLowerCase();
-    if(/hba1c|hiv|hbsag|hcv|widal|tpha|vdrl|rapid|dengue|ns1|\bigg\b|\bigm\b|crp|\brf\b|anti|hcg|sifilis|malaria|tubex|troponin|\btsh\b|\bft4\b/.test(n))return 1;
-    if(/hemato|lyse|diluent|cleaner|edta|rinse|\bcbc\b|sysmex|\bhb\b/.test(n))return 3;
-    if(/urin|strip|sedimen/.test(n))return 4;
+  var DK={p:1,ok:0,it:[]}, DKCOL=['#1d6fe0','#12a36c','#f5a800','#8b4ee0','#10b8d6','#8a96b0','#e0568b','#c7793a'], DKCAT=['Kimia Klinik','Imunologi','Mikrobiologi','Hematologi','Urinalisa','Lain-lain','Molekuler','Tabung & Wadah'], DKL={ok:'Aman',warn:'Menipis',bad:'Habis'};
+  // Kategori diambil dari kolom "Kategori" di tab MASTER REAGEN (k). Bila kolom itu kosong atau tidak dikenali,
+  // kategori ditebak dari nama reagen (ubah pola di sini bila perlu).
+  // Indeks: 0 Kimia Klinik, 1 Imunologi, 2 Mikrobiologi, 3 Hematologi, 4 Urinalisa, 5 Lain-lain, 6 Molekuler, 7 Tabung & Wadah
+  function dkCat(n,k){
+    var s=String(k||'').toLowerCase();
+    if(s){
+      if(/kimia/.test(s))return 0;
+      if(/imun|serolog/.test(s))return 1;
+      if(/mikro|parasit/.test(s))return 2;
+      if(/hemato/.test(s))return 3;
+      if(/urin/.test(s))return 4;
+      if(/molekul/.test(s))return 6;
+      if(/tabung|wadah/.test(s))return 7;
+      if(/lain/.test(s))return 5;
+    }
+    n=String(n||'').toLowerCase();
+    if(/vacutainer|tabung|pot\s*urin|non\s*edta/.test(n))return 7;
+    if(/needle|jarum|cover\s*gla|object\s*gla|pipet|spirt|spirit|alkohol|water\s*one|waterone|aquadest|aquabides|handscoon|kapas/.test(n))return 5;
+    if(/tcm|cartridge|catridge|xpert/.test(n))return 6;
+    if(/urin\s*\d|param|sedimen|urinalisa/.test(n))return 4;
+    if(/hemato|lyse|lysse|diluent|dilluent|cleaner|edta|rinse|alkaline|washing|\bcbc\b|sysmex|\bhb\b/.test(n))return 3;
+    if(/fortest|fortes|glukosa|glucose|\bau\b|asam\s*urat|chol|\btg\b|trigli|hdl|ldl|ureum|urea|kreatinin|creatinin|sgot|sgpt|bilirubin|albumin|hba1c/.test(n))return 0;
+    if(/hiv|hbs\s*ag|hbsag|hcv|widal|salmonella|typhy|typhi|typhoid|tifoid|tpha|vdrl|rapid|dengue|ns\s*1|\bigg\b|\bigm\b|crp|\brf\b|anti|golda|hcg|kehamilan|pp\s*test|plano|sifilis|syphilis|malaria|napza|narkoba|\bfob\b|tubex|troponin|\btsh\b|\bft4\b|\bhir\b/.test(n))return 1;
     if(/agar|gram|ziehl|giemsa|\bbta\b|kultur|pewarna|lugol|methyl|carbol|oil|imersi|parasit|mikro/.test(n))return 2;
-    return 0;}
+    return 5;}
   function dkSt(x){var s=status(x);return s==='Habis'?'bad':s==='Order'?'warn':'ok';}
   function dkSvg(p){return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>';}
   var DKFL='<path d="M9 3h6M10 3v6L5 19a1.6 1.6 0 0 0 1.4 2.3h11.2A1.6 1.6 0 0 0 19 19l-5-10V3M7.5 15h9"/>';
@@ -3098,7 +3116,7 @@ var PANDUAN = [
   }
   function dkS(m){
     if(!$('dkRootS'))return; if(!DK.ok)dkInit();
-    var it=m.items.map(function(x){return {x:x,st:dkSt(x),c:dkCat(x.n),ex:expInfo(x)};}), n=it.length, cn={ok:0,warn:0,bad:0}, cc=[0,0,0,0,0];
+    var it=m.items.map(function(x){return {x:x,st:dkSt(x),c:dkCat(x.n,x.kt),ex:expInfo(x)};}), n=it.length, cn={ok:0,warn:0,bad:0}, cc=[0,0,0,0,0,0,0,0];
     it.forEach(function(r){cn[r.st]++;cc[r.c]++;}); DK.it=it;
     var xs={bad:0,warn:0,none:0,list:[]};
     it.forEach(function(r){if(!r.ex){xs.none++;return;} xs.list.push(r); if(r.ex.lvl==='bad')xs.bad++; else if(r.ex.lvl==='warn')xs.warn++;});
@@ -3178,12 +3196,12 @@ var PANDUAN = [
   function kolom(h,re){for(var i=0;i<h.length;i++){if(re.test(h[i]))return i;}return -1;}
   function bangun(master,log){
     var hM=master[0].map(function(x){return String(x||'').trim().toLowerCase();});
-    var cK=kolom(hM,/^nama reagen/), cS=kolom(hM,/^sumber$/), cA=kolom(hM,/^stok awal/), cB=kolom(hM,/^buffer/), cAk=kolom(hM,/^aktif$/), cEx=kolom(hM,/^expired/);
+    var cK=kolom(hM,/^nama reagen/), cS=kolom(hM,/^sumber$/), cA=kolom(hM,/^stok awal/), cB=kolom(hM,/^buffer/), cAk=kolom(hM,/^aktif$/), cEx=kolom(hM,/^expired/), cKt=kolom(hM,/^kategori/);
     var reag={}, urut=[];
     function tambah(nm,obj){if(!reag[nm]){reag[nm]=obj;urut.push(nm);}return reag[nm];}
     master.slice(1).forEach(function(r){
       var nm=String(r[cK]||'').trim(); if(!nm)return;
-      tambah(nm,{s:String(r[cS]||'').trim(),awal:num(r[cA])||0,buf:num(r[cB]),aktif:/^ya$/i.test(String(r[cAk]||'').trim()),mv:{},ed:cEx>-1?tglEd(r[cEx]):null,masuk:[]});
+      tambah(nm,{kat:cKt>-1?String(r[cKt]||'').trim():'',s:String(r[cS]||'').trim(),awal:num(r[cA])||0,buf:num(r[cB]),aktif:/^ya$/i.test(String(r[cAk]||'').trim()),mv:{},ed:cEx>-1?tglEd(r[cEx]):null,masuk:[]});
     });
     var hL=log[0].map(function(x){return String(x||'').trim().toLowerCase();});
     var cT=kolom(hL,/^tanggal/), cN=kolom(hL,/^nama reagen/), cJ=kolom(hL,/^jenis/), cQ=kolom(hL,/^jumlah/), cX=kolom(hL,/^expired$/);
@@ -3191,7 +3209,7 @@ var PANDUAN = [
     log.slice(1).forEach(function(r){
       var t=tglRow(r[cT]); if(!t)return;
       var nm=String(r[cN]||'').trim(); if(!nm)return;
-      var R=tambah(nm,{s:'',awal:0,buf:null,aktif:true,mv:{},ed:null,masuk:[]});
+      var R=tambah(nm,{kat:'',s:'',awal:0,buf:null,aktif:true,mv:{},ed:null,masuk:[]});
       var jn=String(r[cJ]||'').trim().toLowerCase(), q=num(r[cQ])||0;
       var k=t.y*100+t.m, sel=R.mv[k]||(R.mv[k]={i:0,o:0});
       if(/masuk/.test(jn)){sel.i+=q; R.masuk.push({k:k,ed:cX>-1?tglEd(r[cX]):null});} else if(/keluar/.test(jn))sel.o+=q;
@@ -3205,7 +3223,7 @@ var PANDUAN = [
         var R=reag[nm], mv=R.mv[k2]||{i:0,o:0}, a=running[nm], e=a+mv.i-mv.o;
         running[nm]=e;
         if(!R.aktif&&!mv.i&&!mv.o)return;
-        items.push({n:nm,s:R.s,a:a,i:mv.i,o:mv.o,e:e,b:R.buf,k:'',ed:edBulan(R,k2)});
+        items.push({n:nm,kt:R.kat,s:R.s,a:a,i:mv.i,o:mv.o,e:e,b:R.buf,k:'',ed:edBulan(R,k2)});
       });
       if(items.length)out.push({name:BLN_NAMA[m-1],yr:y,items:items});
     }
