@@ -3068,6 +3068,7 @@ var PANDUAN = [
       '<div id="dkExp"></div><div class="dk-kpis" id="dkKp"></div>'+
       '<div class="dk-grid"><div class="dk-p"><h3>Daftar Stok Reagensia</h3>'+
       '<div class="dk-filter"><input id="dkQ" type="search" autocomplete="off" placeholder="Cari reagensia..."><select id="dkC"><option value="">Semua Kategori</option>'+DKCAT.map(function(c,i){return '<option value="'+i+'">'+c+'</option>';}).join('')+'</select>'+
+      '<select id="dkSrc" aria-label="Filter sumber reagen"><option value="">Semua Sumber</option></select>'+
       '<select id="dkSt"><option value="">Semua Status</option><option value="ok">Aman</option><option value="warn">Menipis</option><option value="bad">Habis</option><option value="ex">Segera / Lewat Expired</option></select></div>'+
       '<div style="overflow-x:auto"><table class="dk-t" id="dkT"><thead><tr><th>No</th><th>Nama Reagensia</th><th>Kategori</th><th>Stok Saat Ini</th><th>Satuan</th><th>Status</th><th>Tanggal Expired</th><th>Aksi</th></tr></thead><tbody></tbody></table></div>'+
       '<div class="dk-pg"><span id="dkI"></span><div id="dkP"></div></div></div>'+
@@ -3077,14 +3078,14 @@ var PANDUAN = [
       '<div class="dk-p dk-b"><span class="ik">'+dkSvg('<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>')+'</span><div><small>Ringkasan Bulanan</small><em id="dkBl"></em></div><button type="button" class="dk-btn o" onclick="window.__pmGo&&__pmGo(\'ringkasan\')">Lihat Detail</button></div>'+
       '<a class="dk-p dk-b dk-wide" target="_blank" rel="noopener noreferrer" href="'+L+'"><span class="ik">'+dkSvg(DKFL)+'</span><div><small>Kelola stok reagensia dengan lebih mudah</small><em>Tambah reagensia baru, pantau stok harian dan bulanan secara otomatis.</em></div><span class="dk-chev">›</span></a></div>';
     $('dkTgl').textContent=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-    ['dkQ','dkC','dkSt'].forEach(function(i){$(i).addEventListener(i==='dkQ'?'input':'change',function(){DK.p=1;dkTbl();});});
+    ['dkQ','dkC','dkSrc','dkSt'].forEach(function(i){$(i).addEventListener(i==='dkQ'?'input':'change',function(){DK.p=1;dkTbl();});});
     $('dkBln').addEventListener('change',function(){$('stokBulan').selectedIndex=+this.value;DK.p=1;render();});
     $('dkP').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;DK.p=Math.max(1,+b.dataset.p);dkTbl();});
     $('dkT').addEventListener('click',function(e){var b=e.target.closest('.dk-lihat');if(!b)return;var r=b.closest('tr').nextElementSibling;if(r)r.hidden=!r.hidden;});
   }
   function dkTbl(){
-    var q=$('dkQ').value.toLowerCase().trim(), c=$('dkC').value, s=$('dkSt').value;
-    var f=DK.it.filter(function(r){return (!q||r.x.n.toLowerCase().indexOf(q)>=0)&&(c===''||r.c==+c)&&(!s||(s==='ex'?!!(r.ex&&r.ex.lvl):r.st===s));});
+    var q=$('dkQ').value.toLowerCase().trim(), c=$('dkC').value, s=$('dkSt').value, sr=$('dkSrc').value;
+    var f=DK.it.filter(function(r){return (!q||r.x.n.toLowerCase().indexOf(q)>=0)&&(c===''||r.c==+c)&&(!sr||(r.x.s||'')===sr)&&(!s||(s==='ex'?!!(r.ex&&r.ex.lvl):r.st===s));});
     var pg=Math.max(1,Math.ceil(f.length/6)); DK.p=Math.min(DK.p,pg);
     var a=(DK.p-1)*6, rows=f.slice(a,a+6).map(function(r,i){var x=r.x;
       return '<tr><td>'+(a+i+1)+'</td><td>'+esc(x.n)+'</td><td>'+DKCAT[r.c]+'</td><td'+(r.st!=='ok'?' class="'+r.st+'"':'')+'>'+x.e+'</td><td>–</td><td><span class="dk-pill '+r.st+'">'+DKL[r.st]+'</span></td><td>'+expCell(r.ex)+'</td><td><button type="button" class="dk-lihat">Lihat</button></td></tr>'+
@@ -3107,6 +3108,10 @@ var PANDUAN = [
       kp('warn','#f5a800','<path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17.5v.01"/>','Stok Menipis',cn.warn,'#fbbf24')+kp('bad','#e5383b','<path d="m6 6 12 12M18 6 6 18"/>','Stok Habis',cn.bad,'#ff8a8a')+
       kp('exp','#ff7a3d','<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>','Segera / Lewat Expired',xs.bad+xs.warn,'#ffb38a',xs.bad+' lewat · '+xs.warn+' ≤'+EXP_HARI+' hari');
     dkExp(m,xs);
+    var srcSel=$('dkSrc'), srcCur=srcSel.value, srcList=[];
+    it.forEach(function(r){var v=(r.x.s||'').trim(); if(v&&srcList.indexOf(v)<0)srcList.push(v);}); srcList.sort();
+    srcSel.innerHTML='<option value="">Semua Sumber</option>'+srcList.map(function(v){return '<option value="'+esc(v)+'">'+esc(v)+'</option>';}).join('');
+    srcSel.value=srcList.indexOf(srcCur)>=0?srcCur:'';
     dkTbl(); $('dkBl').textContent=m.name+(m.yr?' '+m.yr:'');
     $('dkLg').innerHTML=['ok','warn','bad'].map(function(k){var col={ok:'#12a36c',warn:'#f5b301',bad:'#e5383b'}[k];return '<li><i style="background:'+col+'"></i><span>'+DKL[k]+'</span><b>'+cn[k]+' ('+(n?Math.round(cn[k]/n*100):0)+'%)</b></li>';}).join('');
     if(typeof Chart==='undefined')return;
