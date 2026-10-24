@@ -1443,7 +1443,7 @@ html:has(body[data-view="stok"]),html:has(body[data-view="hari"]){background:#06
 .dk-btn{border:0;border-radius:8px;padding:11px 18px;font-weight:700;font-size:.8rem;color:#fff;cursor:pointer;text-decoration:none;font-family:inherit;white-space:nowrap}
 .dk-btn.g{background:#12a36c}.dk-btn.r{background:#e5383b}.dk-btn.b{background:#1d6fe0}
 .dk-btn.o{background:transparent;border:1px solid #38a0ff;color:#7cc4ff;padding:8px 16px}
-.dk-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+.dk-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:14px}
 .dk-k{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:12px;background:rgba(12,36,92,.7);border:1px solid rgba(80,140,255,.28);min-width:0}
 .dk-k.ok{border-color:rgba(18,163,108,.55);background:rgba(8,70,70,.45)}
 .dk-k.warn{border-color:rgba(245,168,0,.55);background:rgba(80,60,10,.4)}
@@ -1464,6 +1464,32 @@ html:has(body[data-view="stok"]),html:has(body[data-view="hari"]){background:#06
 .dk-t .dk-det td{background:rgba(29,111,224,.12);font-size:.74rem;color:#b9c9ee}
 .dk-pill{display:inline-block;min-width:62px;text-align:center;padding:2px 10px;border-radius:6px;font-size:.72rem;font-weight:700}
 .dk-pill.ok{background:#12a36c;color:#fff}.dk-pill.warn{background:#f5b301;color:#3b2a00}.dk-pill.bad{background:#e5383b;color:#fff}
+/* ===== Peringatan expired ===== */
+.dk-k.exp{border-color:rgba(255,125,60,.6);background:rgba(100,40,15,.45)}
+.dk-pill.dk-exp-p{min-width:0;white-space:nowrap;padding:1px 8px;font-size:.68rem}
+.dk-exd{display:block;font-size:.68rem;color:#b9c9ee;margin-top:2px;white-space:nowrap}
+.dk-exp{display:flex;gap:14px;align-items:flex-start;padding:12px 16px;border-radius:12px;margin-bottom:14px;border:1px solid rgba(80,140,255,.28);background:rgba(10,30,80,.72);color:#e8efff}
+.dk-exp.ok{border-color:rgba(18,163,108,.55);background:rgba(8,70,70,.4)}
+.dk-exp.warn{border-color:rgba(245,168,0,.65);background:rgba(90,65,10,.5)}
+.dk-exp.bad{border-color:rgba(229,56,59,.7);background:rgba(110,20,35,.55)}
+.dk-exp .ik{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex:none;font-size:1.25rem;font-weight:700;color:#fff;background:#1d6fe0}
+.dk-exp.ok .ik{background:#12a36c}.dk-exp.warn .ik{background:#f5a800;color:#3b2a00}.dk-exp.bad .ik{background:#e5383b}
+.dk-exp b{display:block;font-size:.95rem;font-weight:600;color:#fff}
+.dk-exp p{margin:2px 0 6px;font-size:.78rem;color:#c9d7f7;line-height:1.45}
+.dk-exp ul{list-style:none;margin:0;padding:0;display:grid;gap:5px;font-size:.78rem}
+.dk-exp li{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dk-exp li.m{color:#c9d7f7}
+.dk-exp .dk-btn{margin-left:auto;flex:none;align-self:center}
+@media(max-width:700px){.dk-exp{flex-wrap:wrap}.dk-exp .dk-btn{margin-left:0;width:100%;text-align:center}}
+.home-exp{display:flex;align-items:center;gap:14px;padding:12px 18px;margin:0 0 16px;border-radius:14px;border:1px solid #f1c27a;background:#fff6e0;color:#7a4b00}
+.home-exp[hidden]{display:none}
+.home-exp.bad{border-color:#f0a5a0;background:#fde8e6;color:#9d231c}
+.home-exp .he-ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:1.15rem;font-weight:700;color:#fff;background:#f5a800}
+.home-exp.bad .he-ic{background:#e5413c}
+.home-exp b{display:block;font-size:.95rem}
+.home-exp span.he-t{display:block;font-size:.84rem;opacity:.9}
+.home-exp .pill-btn{margin-left:auto;flex:none}
+@media(max-width:700px){.home-exp{flex-wrap:wrap}.home-exp .pill-btn{margin-left:0}}
 .dk-lihat{background:#1d6fe0;color:#fff;border:0;border-radius:5px;padding:4px 18px;font-size:.72rem;cursor:pointer;font-family:inherit}
 .dk-filter{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
 .dk-filter input,.dk-filter select{background:rgba(6,20,60,.8);border:1px solid rgba(80,140,255,.35);color:#e8efff;border-radius:8px;padding:8px 12px;font-size:.8rem;font-family:inherit}
@@ -1597,6 +1623,8 @@ html:has(body[data-view="stok"]),html:has(body[data-view="hari"]){background:#06
       <div class="hk"><div class="hk-ic"><svg class="ic" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.5-3.4 2.7-5 5.5-5s5 1.6 5.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.4.1 3.8 1.6 4.2 4.3"/></svg></div><div><small>Total Kunjungan</small><b id="hk3">–</b><span id="hk3s" class="hk-sub">&nbsp;</span></div></div>
       <div class="hk"><div class="hk-ic"><svg class="ic" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><small>Kesesuaian Waktu Tunggu</small><b id="hk4">–</b><span id="hk4s" class="hk-sub">&nbsp;</span></div></div>
     </section>
+
+    <section class="home-exp" id="homeExp" data-view="home" role="alert" hidden></section>
 
     <section class="home-row" data-view="home">
       <div id="homeChartSlot"></div>
@@ -3037,10 +3065,10 @@ var PANDUAN = [
       '<div class="dk-ctl"><label class="dk-f"><small>Periode Stok</small><select id="dkBln"></select></label>'+
       '<a class="dk-btn g staff-only" target="_blank" rel="noopener noreferrer" href="'+L+'" title="Tambah reagen lewat Google Sheets">＋ TAMBAH REAGEN</a>'+
       '<a class="dk-btn r staff-only" target="_blank" rel="noopener noreferrer" href="'+L+'" title="Hapus reagen lewat Google Sheets">Hapus Reagen</a></div></div>'+
-      '<div class="dk-kpis" id="dkKp"></div>'+
+      '<div id="dkExp"></div><div class="dk-kpis" id="dkKp"></div>'+
       '<div class="dk-grid"><div class="dk-p"><h3>Daftar Stok Reagensia</h3>'+
       '<div class="dk-filter"><input id="dkQ" type="search" autocomplete="off" placeholder="Cari reagensia..."><select id="dkC"><option value="">Semua Kategori</option>'+DKCAT.map(function(c,i){return '<option value="'+i+'">'+c+'</option>';}).join('')+'</select>'+
-      '<select id="dkSt"><option value="">Semua Status</option><option value="ok">Aman</option><option value="warn">Menipis</option><option value="bad">Habis</option></select></div>'+
+      '<select id="dkSt"><option value="">Semua Status</option><option value="ok">Aman</option><option value="warn">Menipis</option><option value="bad">Habis</option><option value="ex">Segera / Lewat Expired</option></select></div>'+
       '<div style="overflow-x:auto"><table class="dk-t" id="dkT"><thead><tr><th>No</th><th>Nama Reagensia</th><th>Kategori</th><th>Stok Saat Ini</th><th>Satuan</th><th>Status</th><th>Tanggal Expired</th><th>Aksi</th></tr></thead><tbody></tbody></table></div>'+
       '<div class="dk-pg"><span id="dkI"></span><div id="dkP"></div></div></div>'+
       '<div><div class="dk-p"><h3>Stok Reagensia per Kategori</h3><div class="dk-ch"><canvas id="dkBar"></canvas></div></div>'+
@@ -3056,11 +3084,11 @@ var PANDUAN = [
   }
   function dkTbl(){
     var q=$('dkQ').value.toLowerCase().trim(), c=$('dkC').value, s=$('dkSt').value;
-    var f=DK.it.filter(function(r){return (!q||r.x.n.toLowerCase().indexOf(q)>=0)&&(c===''||r.c==+c)&&(!s||r.st===s);});
+    var f=DK.it.filter(function(r){return (!q||r.x.n.toLowerCase().indexOf(q)>=0)&&(c===''||r.c==+c)&&(!s||(s==='ex'?!!(r.ex&&r.ex.lvl):r.st===s));});
     var pg=Math.max(1,Math.ceil(f.length/6)); DK.p=Math.min(DK.p,pg);
     var a=(DK.p-1)*6, rows=f.slice(a,a+6).map(function(r,i){var x=r.x;
-      return '<tr><td>'+(a+i+1)+'</td><td>'+esc(x.n)+'</td><td>'+DKCAT[r.c]+'</td><td'+(r.st!=='ok'?' class="'+r.st+'"':'')+'>'+x.e+'</td><td>–</td><td><span class="dk-pill '+r.st+'">'+DKL[r.st]+'</span></td><td>–</td><td><button type="button" class="dk-lihat">Lihat</button></td></tr>'+
-        '<tr class="dk-det" hidden><td colspan="8">Sumber: <b>'+esc(x.s||'–')+'</b> · Stok awal: <b>'+x.a+'</b> · Masuk: <b>'+x.i+'</b> · Keluar: <b>'+x.o+'</b> · Stok akhir: <b>'+x.e+'</b> · Buffer: <b>'+(x.b==null?'–':x.b)+'</b></td></tr>';}).join('');
+      return '<tr><td>'+(a+i+1)+'</td><td>'+esc(x.n)+'</td><td>'+DKCAT[r.c]+'</td><td'+(r.st!=='ok'?' class="'+r.st+'"':'')+'>'+x.e+'</td><td>–</td><td><span class="dk-pill '+r.st+'">'+DKL[r.st]+'</span></td><td>'+expCell(r.ex)+'</td><td><button type="button" class="dk-lihat">Lihat</button></td></tr>'+
+        '<tr class="dk-det" hidden><td colspan="8">Sumber: <b>'+esc(x.s||'–')+'</b> · Stok awal: <b>'+x.a+'</b> · Masuk: <b>'+x.i+'</b> · Keluar: <b>'+x.o+'</b> · Stok akhir: <b>'+x.e+'</b> · Buffer: <b>'+(x.b==null?'–':x.b)+'</b> · Expired terakhir: <b>'+(r.ex?esc(r.ex.tgl+' ('+r.ex.txt+')'):'belum diisi')+'</b></td></tr>';}).join('');
     $('dkT').tBodies[0].innerHTML=rows||'<tr><td colspan="8">Tidak ada reagensia yang cocok.</td></tr>';
     $('dkI').textContent='Menampilkan '+(f.length?a+1:0)+' - '+Math.min(a+6,f.length)+' dari '+f.length+' data';
     var s0=Math.max(1,Math.min(DK.p-2,pg-4)), b='<button type="button" data-p="'+(DK.p-1)+'">‹</button>';
@@ -3069,12 +3097,16 @@ var PANDUAN = [
   }
   function dkS(m){
     if(!$('dkRootS'))return; if(!DK.ok)dkInit();
-    var it=m.items.map(function(x){return {x:x,st:dkSt(x),c:dkCat(x.n)};}), n=it.length, cn={ok:0,warn:0,bad:0}, cc=[0,0,0,0,0];
+    var it=m.items.map(function(x){return {x:x,st:dkSt(x),c:dkCat(x.n),ex:expInfo(x)};}), n=it.length, cn={ok:0,warn:0,bad:0}, cc=[0,0,0,0,0];
     it.forEach(function(r){cn[r.st]++;cc[r.c]++;}); DK.it=it;
+    var xs={bad:0,warn:0,none:0,list:[]};
+    it.forEach(function(r){if(!r.ex){xs.none++;return;} xs.list.push(r); if(r.ex.lvl==='bad')xs.bad++; else if(r.ex.lvl==='warn')xs.warn++;});
     $('dkBln').innerHTML=bulan.map(function(b,i){return '<option value="'+i+'">'+esc(b.name+(b.yr?' '+b.yr:''))+'</option>';}).join(''); $('dkBln').value=$('stokBulan').selectedIndex;
-    function kp(c,col,ic,t,v,tc){return '<div class="dk-k '+c+'"><span class="ik" style="background:'+col+'">'+dkSvg(ic)+'</span><div><small class="t" style="color:'+tc+'">'+t+'</small><b>'+v+'</b><small>jenis reagensia</small></div></div>';}
+    function kp(c,col,ic,t,v,tc,sb){return '<div class="dk-k '+c+'"><span class="ik" style="background:'+col+'">'+dkSvg(ic)+'</span><div><small class="t" style="color:'+tc+'">'+t+'</small><b>'+v+'</b><small>'+(sb||'jenis reagensia')+'</small></div></div>';}
     $('dkKp').innerHTML=kp('','#1d6fe0',DKFL,'Total Reagensia',n,'#c9d7f7')+kp('ok','#12a36c','<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>','Stok Aman',cn.ok,'#34d399')+
-      kp('warn','#f5a800','<path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17.5v.01"/>','Stok Menipis',cn.warn,'#fbbf24')+kp('bad','#e5383b','<path d="m6 6 12 12M18 6 6 18"/>','Stok Habis',cn.bad,'#ff8a8a');
+      kp('warn','#f5a800','<path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17.5v.01"/>','Stok Menipis',cn.warn,'#fbbf24')+kp('bad','#e5383b','<path d="m6 6 12 12M18 6 6 18"/>','Stok Habis',cn.bad,'#ff8a8a')+
+      kp('exp','#ff7a3d','<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>','Segera / Lewat Expired',xs.bad+xs.warn,'#ffb38a',xs.bad+' lewat · '+xs.warn+' ≤'+EXP_HARI+' hari');
+    dkExp(m,xs);
     dkTbl(); $('dkBl').textContent=m.name+(m.yr?' '+m.yr:'');
     $('dkLg').innerHTML=['ok','warn','bad'].map(function(k){var col={ok:'#12a36c',warn:'#f5b301',bad:'#e5383b'}[k];return '<li><i style="background:'+col+'"></i><span>'+DKL[k]+'</span><b>'+cn[k]+' ('+(n?Math.round(cn[k]/n*100):0)+'%)</b></li>';}).join('');
     if(typeof Chart==='undefined')return;
@@ -3094,26 +3126,70 @@ var PANDUAN = [
   function cekTeks(t){if(/^\s*</.test(t))throw new Error('Google meminta login, sheet belum publik');return t;}
   function ambil(nama){return fetch(tabUrl(nama),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status+' ('+nama+')');return r.text();}).then(cekTeks).then(csv);}
   function tglRow(s){var m=/^\s*(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/.exec(String(s||''));return m?{d:+m[1],m:+m[2],y:+m[3]}:null;}
+  // ----- Peringatan expired: mengikuti kolom "Peringatan expired" di tab STOK OPNAME -----
+  // Tanggal expired = baris penerimaan (Masuk) terakhir sampai akhir bulan; bila kosong dipakai kolom Expired di MASTER REAGEN.
+  // KEDALUWARSA bila lewat hari ini, SEGERA ED bila tinggal <= EXP_HARI hari (nilai dari sel B4 tab PETUNJUK, bawaan 90).
+  var EXP_HARI=90, SHORT_BLN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  function tglEd(s){
+    var t=tglRow(s);
+    if(!t){var m=/^\s*(\d{4})-(\d{1,2})-(\d{1,2})/.exec(String(s||'')); if(m)t={y:+m[1],m:+m[2],d:+m[3]};}
+    return t&&t.m>=1&&t.m<=12&&t.d>=1&&t.d<=31?t:null;
+  }
+  function edBulan(R,k){var e=null; R.masuk.forEach(function(z){if(z.k<=k)e=z;}); return (e&&e.ed)||R.ed||null;}
+  function fmtTgl(t){return t.d+' '+SHORT_BLN[t.m-1]+' '+t.y;}
+  function expInfo(x){
+    if(!x||!x.ed)return null;
+    var n=new Date(), h=new Date(n.getFullYear(),n.getMonth(),n.getDate()), t=new Date(x.ed.y,x.ed.m-1,x.ed.d);
+    var d=Math.round((t-h)/86400000);
+    return {d:d,lvl:d<0?'bad':d<=EXP_HARI?'warn':'',tgl:fmtTgl(x.ed),
+      txt:d<0?'Kedaluwarsa '+(-d)+' hari lalu':d===0?'Expired hari ini':d+' hari lagi'};
+  }
+  function expCell(e){
+    if(!e)return '<span title="Tanggal expired belum diisi di spreadsheet">–</span>';
+    return '<div>'+esc(e.tgl)+'</div>'+(e.lvl?'<span class="dk-pill '+e.lvl+' dk-exp-p">'+(e.lvl==='bad'?'Kedaluwarsa':'Segera ED')+'</span> ':'')+'<small class="dk-exd">'+esc(e.txt)+'</small>';
+  }
+  function setHari(rows){
+    for(var i=0;i<rows.length;i++){var r=rows[i];
+      for(var j=0;j<r.length;j++){
+        if(/peringatan\s+expired/i.test(String(r[j]||''))){
+          for(var k=j+1;k<r.length;k++){var n=num(r[k]); if(n!=null&&n>0&&n<=3650){EXP_HARI=n;return;}}
+        }}}
+  }
+  function dkExp(m,xs){
+    var el=$('dkExp'); if(!el)return;
+    var L=xs.list.filter(function(r){return r.ex.lvl;}).sort(function(a,b){return a.ex.d-b.ex.d;});
+    window.__expInfo={bad:xs.bad,warn:xs.warn,hari:EXP_HARI,bulan:m.name,top:L.slice(0,3).map(function(r){return r.x.n;})};
+    var tot=xs.list.length+xs.none;
+    if(!L.length){
+      el.innerHTML='<div class="dk-exp ok" role="status"><span class="ik">✓</span><div><b>Tidak ada reagen yang kedaluwarsa atau mendekati expired</b><p>Batas peringatan '+EXP_HARI+' hari. '+xs.list.length+' dari '+tot+' reagen sudah diisi tanggal expired-nya'+(xs.none?'; sisanya belum diisi di spreadsheet.':'.')+'</p></div></div>';
+      return;}
+    el.innerHTML='<div class="dk-exp '+(xs.bad?'bad':'warn')+'" role="alert"><span class="ik">⚠</span><div><b>Peringatan Expired</b><p>'+
+      (xs.bad?xs.bad+' reagen sudah kedaluwarsa':'')+(xs.bad&&xs.warn?' · ':'')+(xs.warn?xs.warn+' reagen akan expired dalam ≤ '+EXP_HARI+' hari':'')+
+      '. Tanggal diambil dari penerimaan terakhir (kolom Expired di LOG TRANSAKSI), atau dari MASTER REAGEN bila kosong.'+(xs.none?' '+xs.none+' reagen belum diisi tanggal expired.':'')+'</p><ul>'+
+      L.slice(0,6).map(function(r){return '<li><span class="dk-pill '+r.ex.lvl+' dk-exp-p">'+(r.ex.lvl==='bad'?'Kedaluwarsa':'Segera ED')+'</span><span>'+esc(r.x.n)+' – '+esc(r.ex.tgl)+' ('+esc(r.ex.txt)+')</span></li>';}).join('')+
+      (L.length>6?'<li class="m">dan '+(L.length-6)+' reagen lainnya…</li>':'')+'</ul></div><button type="button" class="dk-btn o" id="dkExpBtn">Tampilkan di tabel</button></div>';
+    $('dkExpBtn').addEventListener('click',function(){$('dkSt').value='ex';DK.p=1;dkTbl();var t=$('dkT');if(t&&t.scrollIntoView)t.scrollIntoView({behavior:'smooth',block:'center'});});
+  }
   function kolom(h,re){for(var i=0;i<h.length;i++){if(re.test(h[i]))return i;}return -1;}
   function bangun(master,log){
     var hM=master[0].map(function(x){return String(x||'').trim().toLowerCase();});
-    var cK=kolom(hM,/^nama reagen/), cS=kolom(hM,/^sumber$/), cA=kolom(hM,/^stok awal/), cB=kolom(hM,/^buffer/), cAk=kolom(hM,/^aktif$/);
+    var cK=kolom(hM,/^nama reagen/), cS=kolom(hM,/^sumber$/), cA=kolom(hM,/^stok awal/), cB=kolom(hM,/^buffer/), cAk=kolom(hM,/^aktif$/), cEx=kolom(hM,/^expired/);
     var reag={}, urut=[];
     function tambah(nm,obj){if(!reag[nm]){reag[nm]=obj;urut.push(nm);}return reag[nm];}
     master.slice(1).forEach(function(r){
       var nm=String(r[cK]||'').trim(); if(!nm)return;
-      tambah(nm,{s:String(r[cS]||'').trim(),awal:num(r[cA])||0,buf:num(r[cB]),aktif:/^ya$/i.test(String(r[cAk]||'').trim()),mv:{}});
+      tambah(nm,{s:String(r[cS]||'').trim(),awal:num(r[cA])||0,buf:num(r[cB]),aktif:/^ya$/i.test(String(r[cAk]||'').trim()),mv:{},ed:cEx>-1?tglEd(r[cEx]):null,masuk:[]});
     });
     var hL=log[0].map(function(x){return String(x||'').trim().toLowerCase();});
-    var cT=kolom(hL,/^tanggal/), cN=kolom(hL,/^nama reagen/), cJ=kolom(hL,/^jenis/), cQ=kolom(hL,/^jumlah/);
+    var cT=kolom(hL,/^tanggal/), cN=kolom(hL,/^nama reagen/), cJ=kolom(hL,/^jenis/), cQ=kolom(hL,/^jumlah/), cX=kolom(hL,/^expired$/);
     var maxIdx=0;
     log.slice(1).forEach(function(r){
       var t=tglRow(r[cT]); if(!t)return;
       var nm=String(r[cN]||'').trim(); if(!nm)return;
-      var R=tambah(nm,{s:'',awal:0,buf:null,aktif:true,mv:{}});
+      var R=tambah(nm,{s:'',awal:0,buf:null,aktif:true,mv:{},ed:null,masuk:[]});
       var jn=String(r[cJ]||'').trim().toLowerCase(), q=num(r[cQ])||0;
       var k=t.y*100+t.m, sel=R.mv[k]||(R.mv[k]={i:0,o:0});
-      if(/masuk/.test(jn))sel.i+=q; else if(/keluar/.test(jn))sel.o+=q;
+      if(/masuk/.test(jn)){sel.i+=q; R.masuk.push({k:k,ed:cX>-1?tglEd(r[cX]):null});} else if(/keluar/.test(jn))sel.o+=q;
       maxIdx=Math.max(maxIdx,(t.y-TAHUN_AWAL)*12+t.m-1);
     });
     var running={}; urut.forEach(function(nm){running[nm]=reag[nm].awal;});
@@ -3124,7 +3200,7 @@ var PANDUAN = [
         var R=reag[nm], mv=R.mv[k2]||{i:0,o:0}, a=running[nm], e=a+mv.i-mv.o;
         running[nm]=e;
         if(!R.aktif&&!mv.i&&!mv.o)return;
-        items.push({n:nm,s:R.s,a:a,i:mv.i,o:mv.o,e:e,b:R.buf,k:''});
+        items.push({n:nm,s:R.s,a:a,i:mv.i,o:mv.o,e:e,b:R.buf,k:'',ed:edBulan(R,k2)});
       });
       if(items.length)out.push({name:BLN_NAMA[m-1],yr:y,items:items});
     }
@@ -3132,7 +3208,8 @@ var PANDUAN = [
   }
   function load(){
     $('stokNote').textContent='Memuat data…';
-    Promise.all([ambil('MASTER REAGEN'),ambil('LOG TRANSAKSI')]).then(function(h){
+    Promise.all([ambil('MASTER REAGEN'),ambil('LOG TRANSAKSI'),ambil('PETUNJUK').catch(function(){return null;})]).then(function(h){
+      if(h[2])setHari(h[2]);
       var d=bangun(h[0],h[1]); if(!d.length)throw new Error('data LOG TRANSAKSI kosong');
       var keep=bulan.length?$('stokBulan').selectedIndex:-1; bulan=d; fillReagen(); skReagenFill(); fillTahun();
       $('stokBulan').innerHTML=d.map(function(x){return '<option>'+esc(x.name)+'</option>';}).join('');
@@ -3363,10 +3440,20 @@ var PANDUAN = [
     $('hk3').textContent=txt('kpi2')||'–'; $('hk3s').innerHTML=($('kpi2s')&&$('kpi2s').innerHTML)||'&nbsp;';
     var mk=document.querySelectorAll('#mutuKpi .kpi');
     if(mk.length>1){ $('hk4').textContent=mk[1].querySelector('b').textContent; var sm=mk[1].querySelector('small'); $('hk4s').textContent=sm?sm.textContent:' '; }
+    var E=window.__expInfo, he=$('homeExp'), expTxt=(E&&(E.bad||E.warn))?' · Expired '+(E.bad+E.warn):'';
+    if(he){
+      if(E&&(E.bad||E.warn)){
+        he.hidden=false; he.className='home-exp '+(E.bad?'bad':'warn');
+        he.innerHTML='<span class="he-ic">⚠</span><div><b>Peringatan Expired Reagensia</b><span class="he-t">'+
+          (E.bad?E.bad+' reagen kedaluwarsa':'')+(E.bad&&E.warn?' · ':'')+(E.warn?E.warn+' reagen akan expired ≤ '+E.hari+' hari':'')+
+          (E.top&&E.top.length?' ('+E.top.join(', ').replace(/</g,'&lt;')+((E.bad+E.warn)>E.top.length?', dll.':'')+')':'')+'</span></div>'+
+          '<button type="button" class="pill-btn" onclick="setView(\'stok\')">Lihat Stok →</button>';
+      }else he.hidden=true;
+    }
     var pend=txt('taskPending')||'0';
     var items=[
       ['tasks','Dashboard Tasks',pend+' tugas belum selesai','ic-a'],
-      ['flask','Stok Reagensia',(txt('stokH')&&txt('stokH')!=='–')?('Habis '+txt('stokH')+' · Perlu order '+txt('stokM')+' · Aman '+txt('stokA')):(txt('stokNote')||'Memuat data…'),'ic-b'],
+      ['flask','Stok Reagensia',(txt('stokH')&&txt('stokH')!=='–')?('Habis '+txt('stokH')+' · Perlu order '+txt('stokM')+' · Aman '+txt('stokA')+expTxt):(txt('stokNote')||'Memuat data…'),'ic-b'],
       ['folder','Laporan Tahunan',txt('ringkasanNote')||'Memuat data…','ic-c'],
       ['cloud','Backup Data',txt('backupInfo')||'—','ic-d']
     ];
